@@ -66,7 +66,7 @@ def fazer_login(
     if user_existente is None:
         return templates.TemplateResponse(
             request,
-            "cadastro.html",
+            "login.html",
             {"request": request, "erro": "Email ou senha ja cadastrado ou invalidos"}
         )
     
