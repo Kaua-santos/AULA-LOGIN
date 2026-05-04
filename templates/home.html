@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0e0e12;
+      --surface: #17171f;
+      --surface2: #1e1e28;
+      --border: rgba(255,255,255,0.07);
+      --border-hover: rgba(255,255,255,0.15);
+      --accent: #7c6ef5;
+      --accent-glow: rgba(124,110,245,0.25);
+      --green: #5dd1a0;
+      --green-glow: rgba(93,209,160,0.2);
+      --text: #f0eff5;
+      --muted: #8a8898;
+      --danger: #f05c5c;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* background blobs */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -20%;
+      left: -15%;
+      width: 55%;
+      height: 55%;
+      background: radial-gradient(ellipse, rgba(124,110,245,0.10) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -20%;
+      right: -10%;
+      width: 50%;
+      height: 50%;
+      background: radial-gradient(ellipse, rgba(93,209,160,0.07) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* NAVBAR */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 2.5rem;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+      background: rgba(14,14,18,0.7);
+      position: sticky;
+      top: 0;
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .user-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 0.4rem 1rem 0.4rem 0.4rem;
+    }
+
+    .avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #a78bfa);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: white;
+      font-family: 'Syne', sans-serif;
+    }
+
+    .user-email {
+      font-size: 0.85rem;
+      color: var(--muted);
+      max-width: 160px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .btn-logout {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.45rem 1rem;
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-logout:hover {
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    /* MAIN */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 5rem 2rem 4rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(124,110,245,0.12);
+      border: 1px solid rgba(124,110,245,0.25);
+      border-radius: 50px;
+      padding: 0.3rem 1rem;
+      font-size: 0.78rem;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 1.8rem;
+      font-weight: 500;
+    }
+
+    .tag-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      text-align: center;
+      line-height: 1.05;
+      margin-bottom: 1.2rem;
+      max-width: 600px;
+    }
+
+    .hero-title span {
+      background: linear-gradient(135deg, var(--accent), var(--green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      color: var(--muted);
+      font-size: 1rem;
+      text-align: center;
+      max-width: 400px;
+      line-height: 1.7;
+      margin-bottom: 3rem;
+    }
+
+    /* ACTION CARDS */
+    .actions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      width: 100%;
+      max-width: 720px;
+    }
+
+    .action-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      cursor: pointer;
+    }
+
+    .action-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-3px);
+    }
+
+    .action-card.primary {
+      background: var(--accent);
+      border-color: transparent;
+    }
+
+    .action-card.primary:hover {
+      box-shadow: 0 8px 30px var(--accent-glow);
+      border-color: transparent;
+    }
+
+    .action-card.green {
+      border-color: rgba(93,209,160,0.2);
+    }
+
+    .action-card.green:hover {
+      border-color: var(--green);
+      box-shadow: 0 8px 30px var(--green-glow);
+    }
+
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .action-card.primary .card-icon {
+      background: rgba(255,255,255,0.15);
+    }
+
+    .icon-purple { background: rgba(124,110,245,0.15); }
+    .icon-green  { background: rgba(93,209,160,0.15); }
+    .icon-red    { background: rgba(240,92,92,0.15); }
+
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .card-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .action-card.primary .card-desc {
+      color: rgba(255,255,255,0.65);
+    }
+
+    .arrow {
+      margin-top: auto;
+      font-size: 1.1rem;
+      color: var(--muted);
+      align-self: flex-end;
+      transition: transform 0.2s;
+    }
+
+    .action-card:hover .arrow { transform: translate(2px, -2px); }
+    .action-card.primary .arrow { color: rgba(255,255,255,0.6); }
+
+    /* STATS ROW */
+    .stats {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 3rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .stat-divider {
+      width: 1px;
+      background: var(--border);
+      align-self: stretch;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">
+      <span class="logo-dot"></span>
+      Sistema
+    </div>
+    <div class="nav-right">
+      <div class="user-badge">
+        <div class="avatar">
+          {% if usuario %}
+            {{ usuario.email[0].upper() }}
+          {% else %}
+            U
+          {% endif %}
+        </div>
+        <span class="user-email">
+          {% if usuario %}{{ usuario.email }}{% else %}usuario@email.com{% endif %}
+        </span>
+      </div>
+      <a href="/logout" class="btn-logout">Sair</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="tag">
+      <span class="tag-dot"></span>
+      Você está logado
+    </div>
+
+    <h1 class="hero-title">
+      Olá,<br><span>seja bem-vindo!</span>
+    </h1>
+    <p class="hero-sub">
+      O que você quer fazer hoje? Escolha uma das opções abaixo para continuar.
+    </p>
+
+    <div class="actions-grid">
+
+      <a href="/perfil" class="action-card primary">
+        <div class="card-icon">👤</div>
+        <div>
+          <p class="card-title">Meu Perfil</p>
+          <p class="card-desc">Visualize e edite suas informações de conta.</p>
+        </div>
+        <span class="arrow">↗</span>
+      </a>
+
+      <a href="/cadastro" class="action-card green">
+        <div class="card-icon icon-green">➕</div>
+        <div>
+          <p class="card-title">Novo Cadastro</p>
+          <p class="card-desc">Adicione um novo usuário ao sistema.</p>
+        </div>
+        <span class="arrow">↗</span>
+      </a>
+
+      <a href="/usuarios" class="action-card">
+        <div class="card-icon icon-purple">📋</div>
+        <div>
+          <p class="card-title">Usuários</p>
+          <p class="card-desc">Veja a lista de todos os usuários cadastrados.</p>
+        </div>
+        <span class="arrow">↗</span>
+      </a>
+
+      <a href="/logout" class="action-card">
+        <div class="card-icon icon-red">🚪</div>
+        <div>
+          <p class="card-title">Sair</p>
+          <p class="card-desc">Encerrar a sessão atual com segurança.</p>
+          </div>
+          <a href="login.html"></a>
+        <span class="arrow">↗</span>
+      </a>
+
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <p class="stat-num">FastAPI</p>
+        <p class="stat-label">Backend</p>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <p class="stat-num">SQLite</p>
+        <p class="stat-label">Banco de dados</p>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <p class="stat-num">Alembic</p>
+        <p class="stat-label">Migrations</p>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
