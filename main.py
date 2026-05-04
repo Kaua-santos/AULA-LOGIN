@@ -11,6 +11,11 @@ app = FastAPI(title="Sistema de loguin")
 
 templates = Jinja2Templates(directory="templates")
 
+@app.get("/")
+def raiz():
+    # Redireciona automaticamente para a página de cadastro ou login
+    return RedirectResponse(url="")
+
 # sistema SSR
 # Rotas (GET, POST)
 @app.get("/cadastro")
@@ -97,3 +102,11 @@ def home(
         "home.html",
         {"request": request, "usuario": usuario}
     )
+
+@app.get("/logout")
+def logout():
+    response = RedirectResponse(url="/login", status_code=303)
+    response.delete_cookie("usuario_id")
+
+    return response
+
